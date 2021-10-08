@@ -42,9 +42,10 @@ contract("EthSwap", ([deployer, investor]) => {
   });
 
   describe("buytokens()", async () => {
+    let result;
     before(async () => {
       //Pruchase tokens before each example
-      let result = await ethSwap.buytokens({
+      result = await ethSwap.buytokens({
         from: investor,
         value: "1000000000000000000",
       });
@@ -59,8 +60,16 @@ contract("EthSwap", ([deployer, investor]) => {
       let ethSwapBalance = await token.balanceOf(ethSwap.address);
       assert.equal(ethSwapBalance.toString(), "999900000000000000000000");
 
+      //Checks if the ETH balance went up
       ethSwapBalance = await web3.eth.getBalance(ethSwap.address);
       assert.equal(ethSwapBalance.toString(), web3.utils.toWei("1", "Ether"));
+
+      //Checks if the event was emitted with all the correct values
+      const event = result.logs[0].args;
+      assert.equal(event.account, investor);
+      assert.equal(event.token, token.address);
+      assert.equal(event.amount.toString(), "100000000000000000000");
+      assert.equal(event.rate.toString(), "100");
     });
   });
 });
