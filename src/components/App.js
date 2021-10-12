@@ -1,8 +1,32 @@
-import React, { Component } from 'react';
-import logo from '../logo.png';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
 
 class App extends Component {
+  async componentWillMount() {
+    //Detecting if the browser is running metamask
+    if (typeof window.ethereum !== "undefined") {
+      console.log("MetaMask is installed!");
+    }
+
+    //Loading blckchain data
+    this.loadBlockChainData();
+  }
+
+  async loadBlockChainData() {
+    //Fetching accounts using the new ethereum api, instead of web3
+    const accounts = await window.ethereum.request({ method: "eth_accounts" });
+    this.setState({ account: accounts[0] });
+    console.log(this.state.account);
+  }
+
+  constructor(props) {
+    super(props);
+    //decalring states the og way
+    this.state = {
+      account: "",
+    };
+  }
+
   render() {
     return (
       <div>
@@ -20,25 +44,7 @@ class App extends Component {
           <div className="row">
             <main role="main" className="col-lg-12 d-flex text-center">
               <div className="content mr-auto ml-auto">
-                <a
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={logo} className="App-logo" alt="logo" />
-                </a>
-                <h1>Dapp University Starter Kit</h1>
-                <p>
-                  Edit <code>src/components/App.js</code> and save to reload.
-                </p>
-                <a
-                  className="App-link"
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LEARN BLOCKCHAIN <u><b>NOW! </b></u>
-                </a>
+                <h1>pedrao</h1>
               </div>
             </main>
           </div>
