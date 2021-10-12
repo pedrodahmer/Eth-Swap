@@ -15,8 +15,18 @@ class App extends Component {
   async loadBlockChainData() {
     //Fetching accounts using the new ethereum api, instead of web3
     const accounts = await window.ethereum.request({ method: "eth_accounts" });
+
+    //Setting the account state to the first account in the array
     this.setState({ account: accounts[0] });
     console.log(this.state.account);
+
+    //Fecthing the balance for any givern account
+    const ethBalance = await window.ethereum.request({
+      method: "eth_getBalance",
+      params: [accounts[0], "latest"],
+    });
+    this.setState({ ethBalance });
+    console.log(this.state.ethBalance);
   }
 
   constructor(props) {
@@ -24,6 +34,7 @@ class App extends Component {
     //decalring states the og way
     this.state = {
       account: "",
+      ethBalance: "",
     };
   }
 
